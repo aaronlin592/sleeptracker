@@ -8,6 +8,21 @@
   transform: translateY(-50%);
 }
 
+h2 {
+  text-align: center;
+}
+
+ion-title {
+  text-align: center;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
 #container strong {
   font-size: 20px;
   line-height: 26px;
@@ -25,3 +40,12 @@
 #container a {
   text-decoration: none;
 }
+
+.sleep-summary {
+  background: #474646;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+

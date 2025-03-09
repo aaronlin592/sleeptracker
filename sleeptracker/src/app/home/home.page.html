@@ -12,40 +12,46 @@
       <ion-title size="large">Sleep Tracker</ion-title>
     </ion-toolbar>
   </ion-header>
-  <div class="container">
-    <h2>Last Night's Sleep</h2>
+
+  <div class="datetime-container">
+    <div id="time">{{ currentTime }}</div>
+    <div id="date">{{ currentDate }}</div>
+    <div id="timeOfDay">Good {{ timeOfDay }}!</div>
+  </div>
+
+  <div class="container" style="padding-left: 10px; padding-right: 10px">
+    <h2 style="padding-bottom: 10px; padding-top: 10px;">Your last night's sleep summary:</h2>
     <div class="sleep-summary">
-      <h1>Sleep Duration Here</h1>
+      <h1>You slept for: <span>XX hrs & XX minutes</span></h1>
       <p>Sleep Score: <span>Sleep Score Here</span></p>
       <p>Mood: <span>Sleep Mood Here</span></p>
     </div>
 
     <!-- <canvas #sleepChart></canvas> -->
-    
   </div>
 </ion-content>
 
 <ion-footer>
   
   <div class="button-container">
-    <ion-button shape="round" size="large" color="dark">Log Sleep Entry</ion-button>
+    <ion-button shape="round" size="large" color="dark" id="open-modal">Log Sleep Entry</ion-button>
   </div>
-      
-  <!-- <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button>Home</ion-button>
-    </ion-buttons>
-    <ion-buttons slot="start">
-      <ion-button>History</ion-button>
-    </ion-buttons>
-    <ion-icon name="heart" aria-hidden="true"></ion-icon>
-    <ion-buttons slot="end">
-      <ion-button>Trends</ion-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button>Settings</ion-button>
-    </ion-buttons>
-  </ion-toolbar> -->
+
+  <ion-modal trigger="open-modal" [initialBreakpoint]="1" [breakpoints]="[0, 1]">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Log Sleep Entry</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="dismissModal()">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+        <div class="block">
+          <p>This is where you can log your sleep entry.</p>
+        </div>
+    </ng-template>
+  </ion-modal>
   
   <ion-toolbar><ion-title>Sleep!!!</ion-title></ion-toolbar>
 </ion-footer>

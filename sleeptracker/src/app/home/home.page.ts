@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonButton, IonFooter, IonIcon, } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonButton, IonFooter, IonIcon, IonModal, ModalController} from '@ionic/angular/standalone';
 import { SleepService } from '../services/sleep.service';
 import { SleepData } from '../data/sleep-data';
 import { OvernightSleepData } from '../data/overnight-sleep-data';
@@ -9,19 +9,41 @@ import { StanfordSleepinessData } from '../data/stanford-sleepiness-data';
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonButton, IonFooter, IonIcon,],
+  standalone: true,
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonButton, IonFooter, IonIcon, IonModal,],
 })
 export class HomePage {
-  constructor(public sleepService:SleepService) {
+
+	currentTime: string = '';
+  	currentDate: string = '';
+  	timeOfDay: string = '';
+
+  	constructor(public sleepService:SleepService, private modalController: ModalController) {
 
 	}
 
 	ngOnInit() {
-		console.log(this.allSleepData);
+		this.updateDateTime();
+		setInterval(() => {
+		  this.updateDateTime();
+		}, 1000);
+	  }
+	
+	updateDateTime() {
+		const now = new Date();
+		this.currentTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+		this.currentDate = now.toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+		this.timeOfDay = this.getTimeOfDay(now.getHours());
+	}
+	
+	getTimeOfDay(hour: number): string {
+		if (hour >= 5 && hour < 12) return 'morning';
+		if (hour >= 12 && hour < 18) return 'afternoon';
+		if (hour >= 18 && hour < 22) return 'evening';
+		return 'night';
 	}
 
-	/* Ionic doesn't allow bindings to static variables, so this getter can be used instead. */
-	get allSleepData() {
-		return SleepService.AllSleepData;
+	async dismissModal() {
+		await this.modalController.dismiss();
 	}
 }

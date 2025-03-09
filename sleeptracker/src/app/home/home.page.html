@@ -7,9 +7,9 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+  <ion-header collapse="condense" class="text-center">
     <ion-toolbar>
-      <ion-title size="large">Sleep Tracker</ion-title>
+      <ion-title class="text-center" size="large">Aaron's Sleep Tracker</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -20,7 +20,7 @@
   </div>
 
   <div class="container" style="padding-left: 10px; padding-right: 10px">
-    <h2 style="padding-bottom: 10px; padding-top: 10px;">Your last night's sleep summary:</h2>
+    <h2 style="padding-bottom: 10px; padding-top: 10px;">Here's your sleep summary:</h2>
     <div class="sleep-summary">
       <h1>You slept for: <span>XX hrs & XX minutes</span></h1>
       <p>Sleep Score: <span>Sleep Score Here</span></p>
@@ -32,26 +32,186 @@
 </ion-content>
 
 <ion-footer>
-  
+
   <div class="button-container">
-    <ion-button shape="round" size="large" color="dark" id="open-modal">Log Sleep Entry</ion-button>
+    <ion-button shape="round" size="large" color="dark" id="open-modal-sleep-hours">Log Sleep Hours</ion-button>
+  </div>
+  <div class="button-container">
+    <ion-button shape="round" size="large" color="dark" style="padding-bottom: 10px;" id="open-modal-sleepiness">Log Sleepiness</ion-button>
   </div>
 
-  <ion-modal trigger="open-modal" [initialBreakpoint]="1" [breakpoints]="[0, 1]">
+  <!-- sleepiness modal -->
+  <ion-modal trigger="open-modal-sleepiness" [initialBreakpoint]="1" [breakpoints]="[0, 1]">
     <ng-template>
       <ion-header>
         <ion-toolbar>
-          <ion-title>Log Sleep Entry</ion-title>
+          <ion-title>Log Sleepiness</ion-title>
           <ion-buttons slot="end">
             <ion-button (click)="dismissModal()">Close</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
-        <div class="block">
-          <p>This is where you can log your sleep entry.</p>
+      <div class="block">
+        <div class="container">
+
+          <div class="button-container">
+            <ion-grid>
+              <ion-row class="ion-align-items-start">
+                <!-- sleepiness scale -->
+                <ion-col>
+                    <p style="font-size: 23px; font-weight: bold; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+                      How sleepy do you feel right now?
+                    </p>
+                    <p style="font-size: medium; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+                    [ 1 = Wide Awake!! <span>7 = Snoozefest...</span> ]
+                    </p>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <!-- range slider -->
+                <ion-col>
+                  <ion-range aria-label="Range with ticks" [pin]="true" [ticks]="true" [snaps]="true" [min]="1" [max]="7"></ion-range>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <p style="font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+                    When did you feel this sleepiness?
+                  </p>
+                </ion-col>
+                <ion-col>
+                  <ion-list>
+                    <ion-item>
+                      <ion-select label="Select all that apply" label-placement="floating" fill="outline" aria-label="Sleepiness Time" interface="popover" [multiple]="true">
+                        <ion-select-option value="morning">Morning</ion-select-option>
+                        <ion-select-option value="after breakfast">After Breakfast</ion-select-option>
+                        <ion-select-option value="noon">Noon</ion-select-option>
+                        <ion-select-option value="after lunch">After Lunch</ion-select-option>
+                        <ion-select-option value="afternoon">Afternoon</ion-select-option>
+                        <ion-select-option value="after dinner">After Dinner</ion-select-option>
+                        <ion-select-option value="before bedtime">Before Bedtime</ion-select-option>
+                        <ion-select-option value="after workout">After Workout</ion-select-option>
+                        <ion-select-option value="after school">After School</ion-select-option>
+                        <ion-select-option value="after work">After Work</ion-select-option>
+                        <ion-select-option value="other">Other</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                  </ion-list>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
+          
+
+          <!-- submit button with are you sure + required fields modals -->
+          <div class="button-container">
+            <ion-button shape="round" size="large" color="dark">Log Sleepiness</ion-button>
+          </div>
+            
         </div>
+      </div>
+    </ng-template>
+  </ion-modal>
+
+  <!-- sleep hours modal -->
+  <ion-modal trigger="open-modal-sleep-hours" [initialBreakpoint]="1" [breakpoints]="[0, 1]">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Log Sleep Hours</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="dismissModal()">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <div class="block">
+        <div class="container">
+
+          <!-- slept at -->
+          <div class="button-container" style="padding: 10px;">
+            <ion-grid>
+              <ion-row class="ion-align-items-center">
+                <ion-col>
+                  <div style="padding-right: 3px; font-size: 23px; font-weight: bold; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+                    I fell asleep at:
+                  </div>
+                </ion-col>
+                <ion-col>
+                  <ion-datetime-button datetime="datetime-slept"></ion-datetime-button>
+                  <ion-modal [keepContentsMounted]="true">
+                    <ng-template>
+                      <ion-datetime
+                        id="datetime-slept"
+                        presentation="date-time"
+                        [formatOptions]="{
+                          date: {
+                            weekday: 'short',
+                            month: 'long',
+                            day: '2-digit',
+                          },
+                          time: {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          },
+                        }"
+                        [showDefaultButtons]="true"
+                        [preferWheel]="true"
+                      ></ion-datetime>
+                    </ng-template>
+                  </ion-modal>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
+          
+          <!-- woke at -->
+          <div class="button-container" style="padding: 10px;">
+            <ion-grid>
+              <ion-row class="ion-align-items-center">
+                <ion-col>
+                  <div style="padding-right: 5px; font-size: x-large; font-weight: bold; 
+                  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+                    I woke up at: 
+                  </div>
+                </ion-col>
+
+                <ion-col>
+                  <ion-datetime-button datetime="datetime-woke"></ion-datetime-button>
+                  <ion-modal [keepContentsMounted]="true">
+                    <ng-template>
+                      <ion-datetime
+                        id="datetime-woke"
+                        presentation="date-time"
+                        [formatOptions]="{
+                          date: {
+                            weekday: 'short',
+                            month: 'long',
+                            day: '2-digit',
+                          },
+                          time: {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          },
+                        }"
+                        [showDefaultButtons]="true"
+                        [preferWheel]="true"
+                      ></ion-datetime>
+                    </ng-template>
+                  </ion-modal>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
+
+          <!-- submit button with are you sure + time logic modals -->
+          <div class="button-container">
+            <ion-button shape="round" size="large" color="dark">Log Sleep Hours</ion-button>
+          </div>
+            
+        </div>
+      </div>
     </ng-template>
   </ion-modal>
   
-  <ion-toolbar><ion-title>Sleep!!!</ion-title></ion-toolbar>
+  <ion-toolbar><ion-title class="animated-text">Good {{ timeOfDay }}, Aaron.</ion-title></ion-toolbar>
 </ion-footer>

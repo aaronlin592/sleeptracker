@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonButton, IonFooter, IonIcon, IonModal, ModalController} from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonButton, IonFooter, IonIcon, IonModal, ModalController, 
+	IonDatetime, IonDatetimeButton, IonRange, IonItem, IonList, IonSelect, IonSelectOption, IonCol, IonGrid, IonRow, } from '@ionic/angular/standalone';
 import { SleepService } from '../services/sleep.service';
 import { SleepData } from '../data/sleep-data';
 import { OvernightSleepData } from '../data/overnight-sleep-data';
@@ -10,7 +11,9 @@ import { StanfordSleepinessData } from '../data/stanford-sleepiness-data';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonButton, IonFooter, IonIcon, IonModal,],
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonButton, 
+	IonFooter, IonIcon, IonModal, IonDatetime, IonDatetimeButton, IonRange,
+	IonItem, IonList, IonSelect, IonSelectOption, IonCol, IonGrid, IonRow],
 })
 export class HomePage {
 
@@ -46,4 +49,5 @@ export class HomePage {
 	async dismissModal() {
 		await this.modalController.dismiss();
 	}
+	  
 }

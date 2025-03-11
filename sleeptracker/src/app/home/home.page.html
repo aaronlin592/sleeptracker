@@ -9,23 +9,51 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense" class="text-center">
     <ion-toolbar>
-      <ion-title class="text-center" size="large">Aaron's Sleep Tracker</ion-title>
+      <ion-title class="text-center" style="font-size: 25px;">Aaron's Sleep Tracker</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <div class="datetime-container">
+
+  <div class="datetime-container" style="padding-top: 40px;">
     <div id="time">{{ currentTime }}</div>
     <div id="date">{{ currentDate }}</div>
     <div id="timeOfDay">Good {{ timeOfDay }}!</div>
   </div>
 
-  <div class="container" style="padding-left: 10px; padding-right: 10px">
-    <h2 style="padding-bottom: 10px; padding-top: 10px;">Here's your sleep summary:</h2>
+  <div class="container" style="padding-top: 40px; padding-left: 10px; padding-right: 10px;">
     <div class="sleep-summary">
-      <h1>You slept for: <span>XX hrs & XX minutes</span></h1>
-      <p>Sleep Score: <span>Sleep Score Here</span></p>
-      <p>Mood: <span>Sleep Mood Here</span></p>
+      <h1>View Your Data Here!</h1>
+      <p>Make sure you get at least 8 hours of sleep!</p>
+      <div class="button-container">
+        <ion-button fill="outline" size="medium" color="dark" id="allLoggedData">View All Logged Data</ion-button>
+        <ion-modal trigger="allLoggedData" [initialBreakpoint]="1" [breakpoints]="[0, 1]" (willPresent)="openModal()">
+          <ng-template>
+            <ion-header>
+              <ion-toolbar>
+                <ion-title>All Logged Data</ion-title>
+                <ion-buttons slot="end">
+                  <ion-button (click)="dismissModal()"> Close </ion-button>
+                </ion-buttons>
+              </ion-toolbar>
+              
+              <ion-list>
+                <ion-item *ngFor="let entry of allStoredData">
+                  <ion-label>
+                    <h3>{{ entry.key }}</h3>
+                      <ion-list>
+                        <ion-item *ngFor="let item of entry.data">
+                          <p>{{ item | json }}</p>
+                        </ion-item>
+                      </ion-list>
+                    </ion-label>
+                  </ion-item>
+                </ion-list>
+            </ion-header>
+          </ng-template>
+        </ion-modal>
+      </div>
     </div>
+    
 
     <!-- <canvas #sleepChart></canvas> -->
   </div>
@@ -70,7 +98,7 @@
               <ion-row>
                 <!-- range slider -->
                 <ion-col>
-                  <ion-range aria-label="Range with ticks" [pin]="true" [ticks]="true" [snaps]="true" [min]="1" [max]="7"></ion-range>
+                  <ion-range aria-label="Range with ticks" [pin]="true" [ticks]="true" [snaps]="true" [min]="1" [max]="7" (ionChange)="onRangeChange($event)"></ion-range>
                 </ion-col>
               </ion-row>
               <ion-row>
@@ -79,33 +107,46 @@
                     When did you feel this sleepiness?
                   </p>
                 </ion-col>
+              </ion-row>
+              <ion-row>
                 <ion-col>
-                  <ion-list>
-                    <ion-item>
-                      <ion-select label="Select all that apply" label-placement="floating" fill="outline" aria-label="Sleepiness Time" interface="popover" [multiple]="true">
-                        <ion-select-option value="morning">Morning</ion-select-option>
-                        <ion-select-option value="after breakfast">After Breakfast</ion-select-option>
-                        <ion-select-option value="noon">Noon</ion-select-option>
-                        <ion-select-option value="after lunch">After Lunch</ion-select-option>
-                        <ion-select-option value="afternoon">Afternoon</ion-select-option>
-                        <ion-select-option value="after dinner">After Dinner</ion-select-option>
-                        <ion-select-option value="before bedtime">Before Bedtime</ion-select-option>
-                        <ion-select-option value="after workout">After Workout</ion-select-option>
-                        <ion-select-option value="after school">After School</ion-select-option>
-                        <ion-select-option value="after work">After Work</ion-select-option>
-                        <ion-select-option value="other">Other</ion-select-option>
-                      </ion-select>
-                    </ion-item>
-                  </ion-list>
+                  <ion-datetime-button datetime="datetime-slept"></ion-datetime-button>
+                  <ion-modal [keepContentsMounted]="true">
+                    <ng-template>
+                      <ion-datetime
+                        id="datetime-slept"
+                        presentation="date-time"
+                        [formatOptions]="{
+                          date: {
+                            weekday: 'short',
+                            month: 'long',
+                            day: '2-digit',
+                          },
+                          time: {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          },
+                        }"
+                        [showDefaultButtons]="true"
+                        [preferWheel]="true"
+                        (ionChange) = "onSleepinessTimeChange($event)"
+                      ></ion-datetime>
+                    </ng-template>
+                  </ion-modal>
                 </ion-col>
               </ion-row>
             </ion-grid>
           </div>
           
 
+          <ion-text color="danger" *ngIf="!selectedSleepinessTime(); else altText">Time is required!</ion-text>
+          <ng-template #altText>
+            <ion-text color="success">Log to Continue!</ion-text>
+          </ng-template>
+
           <!-- submit button with are you sure + required fields modals -->
           <div class="button-container">
-            <ion-button shape="round" size="large" color="dark">Log Sleepiness</ion-button>
+            <ion-button [disabled]="!selectedSleepinessTime()" shape="round" size="large" color="dark" (click)="logSleepinessSleepData(); dismissModal()">Log Sleepiness</ion-button>
           </div>
             
         </div>
@@ -156,6 +197,7 @@
                         }"
                         [showDefaultButtons]="true"
                         [preferWheel]="true"
+                        (ionChange)="onSleptDateTimeChange($event)"
                       ></ion-datetime>
                     </ng-template>
                   </ion-modal>
@@ -195,6 +237,7 @@
                         }"
                         [showDefaultButtons]="true"
                         [preferWheel]="true"
+                        (ionChange)="onWokeDateTimeChange($event)"
                       ></ion-datetime>
                     </ng-template>
                   </ion-modal>
@@ -203,9 +246,15 @@
             </ion-grid>
           </div>
 
+
+          <ion-text color="danger" *ngIf="wokeTimeBeforeOrEqualSleptTimeOrValuesNull(); else alternateText">Select both times. Wake time cannot be earlier than or equal to time slept!</ion-text>
+          <ng-template #alternateText>
+            <ion-text color="success">Valid. Log to Continue!</ion-text>
+          </ng-template>
+
           <!-- submit button with are you sure + time logic modals -->
           <div class="button-container">
-            <ion-button shape="round" size="large" color="dark">Log Sleep Hours</ion-button>
+            <ion-button [disabled]="wokeTimeBeforeOrEqualSleptTimeOrValuesNull()" shape="round" size="large" color="dark" (click)="logOvernightSleepData(); dismissModal()">Log Sleep Hours</ion-button>
           </div>
             
         </div>

@@ -50,7 +50,7 @@ ion-button {
 }
 
 .sleep-summary {
-  background: #474646;
+  background: transparent;
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 20px;
@@ -79,10 +79,11 @@ ion-button {
 }
 
 #timeOfDay {
-  font-size: 72px;
+  font-size: 60px;
   font-weight: 300;
   text-align: center;
   margin-top: 10px;
+  font-style: oblique;
 }
 
 ion-modal {
@@ -151,7 +152,7 @@ ion-range::part(pin)::before {
 }
 
 ion-select {
-  width: 164px;
+  width: 166px;
   min-width: 100%;
   max-width: 100%;
   white-space: nowrap;
